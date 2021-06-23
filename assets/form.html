@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>The House Calculator</title>
+</head>
+
+<body>
+<h1>House Calculator</h1>
+<!--
+  This section of the document specifies the table that will
+  be used to display the list of birds and their description
+ -->
+<table>
+  <tr>
+    <th>Debt Name</th>
+    <th>Debt Amount</th>
+</table>
+<br/>
+
+<!--
+  This section contains the form, that will be used to hit the
+  `POST /debt` API that we will build in the next section
+ -->
+<form action="/debt" method="post">
+  Debt1:
+  <input type="text" name="Debt1">
+  <br/> Debt2:
+  <input type="text" name="Debt2">
+  <br/> Debt3:
+  <input type="text" name="Debt3">
+  <br/> Debt4:
+  <input type="text" name="Debt4">
+  <br/> Debt5:
+  <input type="text" name="Debt5">
+  <br/><br/>
+  <input type="submit" value="Submit">
+</form>
+
+<p id="total_debt"></p>
+<!--
+  Finally, the last section is the script that will
+  run on each page load to fetch the list of debts
+  and add them to our existing table
+ -->
+<script>
+  fetch("/debt")
+  .then((resp) => resp.json())
+  .then(function(data){
+    console.log(data)
+    data.forEach(function(debt){
+      console.log(debt)
+      console.log(debt.total_debt)
+      document.getElementById("total_debt").innerHTML = debt.total_debt
+    })
+  })
+  //DebtTable = document.querySelector("table")
+
+  /*
+  Use the browsers `fetch` API to make a GET call to /debt
+  We expect the response to be a JSON list of debts, of the
+  form :
+  [
+    {"Debt1":"...","Debt1 description":"..."}
+  ]
+  */
+/*  fetch("/debt")
+
+          .then(response => response.json())
+          .then(total_debt => {
+            //Once we fetch the list, we iterate over it
+            total_debt.forEach(total_debt => {
+              console.log(total_debt)
+
+              // Create the table row
+              const row = document.createElement("tr");
+              document.write(total_debt)
+              document.getElementById("total_debt").value = debt.total_debt
+              // Create the table data elements for the species and description columns
+              const DebtName = document.createElement("td");
+              DebtName.innerHTML = debt.total_debt
+              const description = document.createElement("td");
+              description.innerHTML = debt.description
+
+              // Add the data elements to the row
+              row.appendChild(debt)
+              // Finally, add the row element to the table itself
+              DebtTable.appendChild(row)
+            })
+          })*/
+</script>
+</body>
+
+</html>
