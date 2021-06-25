@@ -40,7 +40,6 @@ func GetLoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func UserLoginHandler(w http.ResponseWriter, r *http.Request) {
-	println("YOU MADE IT HERE AFTER LOGIN")
 	user := UserLogin{}
 	err := r.ParseForm()
 
@@ -77,7 +76,6 @@ func GetDebtHandler(w http.ResponseWriter, r *http.Request) {
 		println("made it here")
 		http.Redirect(w, r, "/assets/login.html", http.StatusFound)
 	} else {
-		println("made it to else")
 		c = &http.Cookie{
 			Name: "isLoggedIn"}
 		http.SetCookie(w, c)
@@ -132,11 +130,17 @@ func CreateDebtHandler(w http.ResponseWriter, r *http.Request) {
 	intDebt3, _ := strconv.ParseFloat(debt.Debt3, 64)
 	intDebt4, _ := strconv.ParseFloat(debt.Debt4, 64)
 	intDebt5, _ := strconv.ParseFloat(debt.Debt5, 64)
-	TotalDebt := intDebt1 + intDebt2 + intDebt3 + intDebt4 + intDebt5
-	fmt.Fprintf(w, "%.2f\n", TotalDebt)
-	//Finally, we redirect the user to the original HTMl page (located at `/assets/`)
-	debt.TotalDebt = strconv.Itoa(int(TotalDebt))
-	debtList = append(debtList, debt)
-	http.Redirect(w, r, "/assets/form.html", http.StatusFound)
+	totalDebt := TotalDebt(intDebt1, intDebt2, intDebt3, intDebt4, intDebt5)
 
+	//Finally, we redirect the user to the original HTMl page (located at `/assets/`)
+	debt.TotalDebt = strconv.Itoa(int(totalDebt))
+	debtList = append(debtList, debt)
+	//http.Redirect(w, r, "/assets/form.html", http.StatusFound)
+	fmt.Fprintf(w, "%.2f\n", totalDebt)
+
+}
+
+func TotalDebt(intDebt1 float64, intDebt2 float64, intDebt3 float64, intDebt4 float64, intDebt5 float64) float64 {
+	TotalDebt := intDebt1 + intDebt2 + intDebt3 + intDebt4 + intDebt5
+	return TotalDebt
 }
