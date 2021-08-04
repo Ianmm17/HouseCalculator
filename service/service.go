@@ -1,6 +1,7 @@
 package service
 
 import (
+	"HouseCalculator/repo"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -70,8 +71,8 @@ func UserLoginHandler(w http.ResponseWriter, r *http.Request) {
 
 var debtList []Debt
 
-func GetDebtHandler(w http.ResponseWriter, r *http.Request) {
-	c, err := r.Cookie("isLoggedIn")
+func GetDebtMarshalTotal(w http.ResponseWriter, r *http.Request) {
+	/*c, err := r.Cookie("isLoggedIn")
 	if err != nil {
 		println("made it here")
 		http.Redirect(w, r, "/assets/login.html", http.StatusFound)
@@ -82,7 +83,7 @@ func GetDebtHandler(w http.ResponseWriter, r *http.Request) {
 
 		http.Redirect(w, r, "/assets/form.html", http.StatusFound)
 
-	}
+	}*/
 	//Convert the "debList" variable to json
 	DebtListBytes, err := json.Marshal(debtList)
 
@@ -100,7 +101,7 @@ func GetDebtHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func CreateDebtHandler(w http.ResponseWriter, r *http.Request) {
+func CreateDebtCalculationHandler(w http.ResponseWriter, r *http.Request) {
 	// Create a new instance of Debt
 	debt := Debt{}
 
@@ -130,13 +131,14 @@ func CreateDebtHandler(w http.ResponseWriter, r *http.Request) {
 	intDebt3, _ := strconv.ParseFloat(debt.Debt3, 64)
 	intDebt4, _ := strconv.ParseFloat(debt.Debt4, 64)
 	intDebt5, _ := strconv.ParseFloat(debt.Debt5, 64)
-	totalDebt := TotalDebt(intDebt1, intDebt2, intDebt3, intDebt4, intDebt5)
 
-	//Finally, we redirect the user to the original HTMl page (located at `/assets/`)
-	debt.TotalDebt = strconv.Itoa(int(totalDebt))
+	CombinedTotalDebt := TotalDebt(intDebt1, intDebt2, intDebt3, intDebt4, intDebt5)
+
+	debt.TotalDebt = strconv.Itoa(int(CombinedTotalDebt))
+	repo.DBSetup(debt.TotalDebt)
 	debtList = append(debtList, debt)
-	//http.Redirect(w, r, "/assets/form.html", http.StatusFound)
-	fmt.Fprintf(w, "%.2f\n", totalDebt)
+	http.Redirect(w, r, "/assets/form.html", http.StatusFound)
+	//fmt.Fprintf(w, "%.2f\n", totalDebt)
 
 }
 
