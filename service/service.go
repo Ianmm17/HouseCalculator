@@ -138,7 +138,6 @@ func CreateDebtCalculationHandler(w http.ResponseWriter, r *http.Request) {
 	repo.DBSetup(debt.TotalDebt)
 	debtList = append(debtList, debt)
 	http.Redirect(w, r, "/assets/form.html", http.StatusFound)
-	//fmt.Fprintf(w, "%.2f\n", totalDebt)
 
 }
 
