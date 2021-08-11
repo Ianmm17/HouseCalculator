@@ -37,7 +37,6 @@ func DBSetup(debt string) {
 func curdate() interface{} {
 	dt := time.Now()
 	//Format MM-DD-YYYY
-	fmt.Println(dt.Format("01-02-2006"))
 	dtFMT := dt.Format("01-02-2006")
 	return dtFMT
 
