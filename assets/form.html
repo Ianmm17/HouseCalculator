@@ -36,8 +36,19 @@
   <input type="text" name="Debt4">
   <br/> Debt5:
   <input type="text" name="Debt5">
+  <br/> Debt6:
+  <input type="text" name="Debt6">
+  <br/> Debt7:
+  <input type="text" name="Debt7">
+  <br/> Debt8:
+  <input type="text" name="Debt8">
+  <br/> Debt9:
+  <input type="text" name="Debt9">
+  <br/> Debt10:
+  <input type="text" name="Debt10">
   <br/><br/>
   <input type="submit" value="Submit">
+  <input type="submit" value="History">
 </form>
 
 <p id="total_debt"></p>
@@ -48,7 +59,9 @@
  -->
 <script>
   fetch("/debt")
-  .then((resp) => resp.json())
+  .then((resp) => resp.json()).catch(e => {
+    console.log(e);
+  })
   .then(function(data){
     console.log(data)
     data.forEach(function(debt){
@@ -67,30 +80,6 @@
     {"Debt1":"...","Debt1 description":"..."}
   ]
   */
-/*  fetch("/debt")
-
-          .then(response => response.json())
-          .then(total_debt => {
-            //Once we fetch the list, we iterate over it
-            total_debt.forEach(total_debt => {
-              console.log(total_debt)
-
-              // Create the table row
-              const row = document.createElement("tr");
-              document.write(total_debt)
-              document.getElementById("total_debt").value = debt.total_debt
-              // Create the table data elements for the species and description columns
-              const DebtName = document.createElement("td");
-              DebtName.innerHTML = debt.total_debt
-              const description = document.createElement("td");
-              description.innerHTML = debt.description
-
-              // Add the data elements to the row
-              row.appendChild(debt)
-              // Finally, add the row element to the table itself
-              DebtTable.appendChild(row)
-            })
-          })*/
 </script>
 </body>
 
