@@ -16,8 +16,7 @@
  -->
 <table>
   <tr>
-    <th>Debt Name</th>
-    <th>Debt Amount</th>
+    <th>Monthly Debt</th>
 </table>
 <br/>
 
@@ -26,31 +25,33 @@
   `POST /debt` API that we will build in the next section
  -->
 <form action="/debt" method="post">
-  Debt1:
+  Debt1: &nbsp;
   <input type="text" name="Debt1">
-  <br/> Debt2:
+  <br/> Debt2: &nbsp;
   <input type="text" name="Debt2">
-  <br/> Debt3:
+  <br/> Debt3: &nbsp;
   <input type="text" name="Debt3">
-  <br/> Debt4:
+  <br/> Debt4: &nbsp;
   <input type="text" name="Debt4">
-  <br/> Debt5:
+  <br/> Debt5: &nbsp;
   <input type="text" name="Debt5">
-  <br/> Debt6:
+  <br/> Debt6: &nbsp;
   <input type="text" name="Debt6">
-  <br/> Debt7:
+  <br/> Debt7: &nbsp;
   <input type="text" name="Debt7">
-  <br/> Debt8:
+  <br/> Debt8: &nbsp;
   <input type="text" name="Debt8">
-  <br/> Debt9:
+  <br/> Debt9: &nbsp;
   <input type="text" name="Debt9">
   <br/> Debt10:
   <input type="text" name="Debt10">
   <br/><br/>
   <input type="submit" value="Submit">
+</form>
+<br/>
+<form action="/history" method="post">
   <input type="submit" value="History">
 </form>
-
 <p id="total_debt"></p>
 <!--
   Finally, the last section is the script that will

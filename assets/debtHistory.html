@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>User Debt History</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+<h1>User Debt History</h1>
+
+{{ $length := len . }}
+<h3>Length {{$length}}</h3>
+
+<table border="1">
+    <tr>
+        <td>Total Debt</td>
+        <td>Date</td>
+    </tr>
+    {{ range . }}
+    <tr>
+        <td>{{ .Debt }}</td>
+        <td> {{ .Date }} </td>
+    </tr>
+    {{ end }}
+</table>
+
+</body>
+</html>
+{{ end }}

@@ -4,6 +4,7 @@ import (
 	"HouseCalculator/repo"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
 )
@@ -77,18 +78,7 @@ func UserLoginHandler(w http.ResponseWriter, r *http.Request) {
 var debtList []Debt
 
 func GetDebtMarshalTotal(w http.ResponseWriter, r *http.Request) {
-	/*c, err := r.Cookie("isLoggedIn")
-	if err != nil {
-		println("made it here")
-		http.Redirect(w, r, "/assets/login.html", http.StatusFound)
-	} else {
-		c = &http.Cookie{
-			Name: "isLoggedIn"}
-		http.SetCookie(w, c)
 
-		http.Redirect(w, r, "/assets/form.html", http.StatusFound)
-
-	}*/
 	//Convert the "debList" variable to json
 	DebtListBytes, err := json.Marshal(debtList)
 
@@ -101,9 +91,7 @@ func GetDebtMarshalTotal(w http.ResponseWriter, r *http.Request) {
 	}
 	// If all goes well, write the JSON list of Debts to the response
 	_, err = w.Write(DebtListBytes)
-	if err != nil {
-		return
-	}
+	CheckErr(err)
 }
 
 func CreateDebtCalculationHandler(w http.ResponseWriter, r *http.Request) {
@@ -150,7 +138,7 @@ func CreateDebtCalculationHandler(w http.ResponseWriter, r *http.Request) {
 	CombinedTotalDebt := TotalDebt(intDebt1, intDebt2, intDebt3, intDebt4, intDebt5, intDebt6, intDebt7, intDebt8, intDebt9, intDebt10)
 
 	debt.TotalDebt = strconv.Itoa(int(CombinedTotalDebt))
-	repo.DBSetup(debt.TotalDebt)
+	repo.DBInsert(debt.TotalDebt)
 	debtList = append(debtList, debt)
 	http.Redirect(w, r, "/assets/form.html", http.StatusFound)
 
@@ -162,11 +150,22 @@ func TotalDebt(intDebt1 float64, intDebt2 float64, intDebt3 float64, intDebt4 fl
 }
 
 func GetHistoryHandler(w http.ResponseWriter, r *http.Request) {
-
-	http.Redirect(w, r, "/assets/login.html", http.StatusFound)
+	var tmpl = template.Must(template.ParseFiles("debtHistory.html"))
+	table := repo.DbSelectQuery()
+	err := tmpl.ExecuteTemplate(w, "debtHistory", table)
+	CheckErr(err)
 }
 
-func GetUserHistoryHandler(w http.ResponseWriter, r *http.Request) {
+func UserHistoryHandler(w http.ResponseWriter, r *http.Request) {
+	table := repo.DbSelectQuery()
+	for i := range table {
+		emp := table[i]
+		fmt.Fprintf(w, "Debt and Date|%12s|%12s|\n", emp.Debt, emp.Date)
+	}
+}
 
-	http.Redirect(w, r, "/assets/login.html", http.StatusFound)
+func CheckErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }

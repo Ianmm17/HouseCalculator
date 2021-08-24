@@ -29,8 +29,8 @@ func newRouter() *mux.Router {
 	r.HandleFunc("/userLogin", service.UserLoginHandler).Methods("POST")
 	r.HandleFunc("/debt", service.GetDebtMarshalTotal).Methods("GET")
 	r.HandleFunc("/debt", service.CreateDebtCalculationHandler).Methods("POST")
-	r.HandleFunc("/history", service.GetHistoryHandler).Methods("GET")
-	r.HandleFunc("/history", service.GetUserHistoryHandler).Methods("POST")
+	r.HandleFunc("/viewHistory", service.GetHistoryHandler).Methods("GET")
+	r.HandleFunc("/history", service.UserHistoryHandler).Methods("POST")
 	return r
 }
 
