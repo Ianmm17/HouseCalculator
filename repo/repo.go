@@ -8,6 +8,11 @@ import (
 	"time"
 )
 
+type UserDebtInfo struct {
+	Debt string
+	Date string
+}
+
 const (
 	username = "root"
 	password = "password123"
@@ -15,15 +20,17 @@ const (
 	dbname   = "DebtStorage"
 )
 
-func DBSetup(debt string) {
-	fmt.Println("GO MySQL Tutorial")
+func DBSetup() (db *sql.DB) {
 	//DataBase setup
 	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp%s/%s", username, password, hostname, dbname))
 	if err != nil {
 		log.Printf("Error %s when opening DB\n", err)
 	}
-
-	defer db.Close()
+	return db
+}
+func DBInsert(debt string) {
+	//DataBase Inserting Data
+	db := DBSetup()
 	stmt, err := db.Prepare("INSERT INTO DebtStorage.DebtTable (Debt, Date) VALUES (?, ?)")
 	if err != nil {
 		log.Printf("Error %s when it is preparing", err)
@@ -32,6 +39,29 @@ func DBSetup(debt string) {
 	if err != nil {
 		log.Printf("Error %s when inserting DB\n", err)
 	}
+}
+
+func DbSelectQuery() []UserDebtInfo {
+	db := DBSetup()
+	rows, err := db.Query(`SELECT * FROM DebtStorage.DebtTable`)
+	if err != nil {
+		log.Println(err)
+	}
+	debtTable := UserDebtInfo{}
+	debtsInfo := []UserDebtInfo{}
+
+	for rows.Next() {
+		var debt, date string
+		err = rows.Scan(&debt, &date)
+		if err != nil {
+			log.Println(err)
+		}
+		debtTable.Debt = debt
+		debtTable.Date = date
+		debtsInfo = append(debtsInfo, debtTable)
+	}
+	defer db.Close()
+	return debtsInfo
 }
 
 func curdate() interface{} {
