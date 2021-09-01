@@ -63,6 +63,23 @@
   run on each page load to fetch the list of debts
   and add them to our existing table
  -->
+<script>
+  fetch("/debt")
+          .then((resp) => resp.json()).catch(e => {
+    console.log(e);
+  })
+          .then(function(data){
+            console.log(data)
+            data.forEach(function(debt){
+              console.log(debt)
+              console.log(debt.total_debt)
+              console.log(debt.dti)
+              document.getElementById("total_debt").innerHTML = "Your Monthly Debt Is: $" + debt.total_debt
+              document.getElementById("users_dti").innerHTML = "Your Debt To Income Ratio Is: " + debt.dti + "%"
+            })
+          })
+
+</script>
 </body>
 
 </html>
