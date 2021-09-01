@@ -25,11 +25,14 @@ func newRouter() *mux.Router {
 	// with "/assets/", instead of the absolute route itself
 	r.PathPrefix("/assets/").Handler(staticFileHandler).Methods("GET")
 	//
-	r.HandleFunc("/login", service.GetLoginHandler).Methods("GET")
-	r.HandleFunc("/userLogin", service.UserLoginHandler).Methods("POST")
+	r.HandleFunc("/", service.HandleHome)
+	r.HandleFunc("/login", service.HandleLogin)
+	r.HandleFunc("/callback", service.HandleCallBack)
+	//r.HandleFunc("/login", service.GetLoginHandler).Methods("GET")
+	//r.HandleFunc("/userLogin", service.UserLoginHandler).Methods("POST")
 	r.HandleFunc("/debt", service.GetDebtMarshalTotal).Methods("GET")
 	r.HandleFunc("/debt", service.CreateDebtCalculationHandler).Methods("POST")
-	r.HandleFunc("/viewHistory", service.GetHistoryHandler).Methods("GET")
+	//r.HandleFunc("/viewHistory", service.GetHistoryHandler).Methods("GET")
 	r.HandleFunc("/history", service.UserHistoryHandler).Methods("POST")
 	return r
 }
