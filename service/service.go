@@ -77,58 +77,17 @@ func HandleCallBack(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
-	//User := new(UserLogin)
-	println("######")
 	err = json.NewDecoder(resp.Body).Decode(&loggedInUser)
 	if err != nil {
 		fmt.Printf("could not decode response: %s\n", err.Error())
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
-	println(loggedInUser.UserEmail)
-	println("######")
-
 	defer resp.Body.Close()
-	//repo.DBUserInsert(User.UserID, User.UserEmail)
-
 	http.Redirect(w, r, "/assets/form.html", http.StatusFound)
 
 	return
 }
-
-func GetLoginHandler(w http.ResponseWriter, r *http.Request) {
-
-	http.Redirect(w, r, "/assets/login.html", http.StatusFound)
-}
-
-/*func UserLoginHandler(w http.ResponseWriter, r *http.Request) {
-	user := UserLogin{}
-	err := r.ParseForm()
-
-	// In case of any error, we respond with an error to the user
-	if err != nil {
-		fmt.Println(fmt.Errorf("Error: %v", err))
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	user.UserEmail = r.Form.Get("username")
-	user.UserPassword = r.Form.Get("password")
-
-	UserList = append(UserList, user)
-	fmt.Println(UserList)
-	if user.UserEmail == "milleri" && user.UserPassword == "password123" {
-		http.SetCookie(w, &http.Cookie{
-			Name:  "isLoggedIn",
-			Value: "success",
-		})
-
-		http.Redirect(w, r, "/assets/form.html", http.StatusFound)
-	} else {
-		http.Redirect(w, r, "/assets/login.html", http.StatusFound)
-	}
-
-}*/
 
 var debtList []Debt
 
@@ -151,7 +110,6 @@ func GetDebtMarshalTotal(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateDebtCalculationHandler(w http.ResponseWriter, r *http.Request) {
-	println("postDEBT")
 	// Create a new instance of Debt
 
 	// We send all our data as HTML form data
@@ -219,13 +177,6 @@ func TotalDebt(intDebt1 float64, intDebt2 float64, intDebt3 float64, intDebt4 fl
 	TotalDebt := intDebt1 + intDebt2 + intDebt3 + intDebt4 + intDebt5 + intDebt6 + intDebt7 + intDebt8 + intDebt9 + intDebt10
 	return TotalDebt
 }
-
-/*func GetHistoryHandler(w http.ResponseWriter, r *http.Request) {
-	var tmpl = template.Must(template.ParseFiles("debtHistory.html"))
-	table := repo.DbSelectQuery()
-	err := tmpl.ExecuteTemplate(w, "debtHistory", table)
-	CheckErr(err)
-}*/
 
 func UserHistoryHandler(w http.ResponseWriter, r *http.Request) {
 	table := repo.DbSelectQuery(loggedInUser.UserEmail)
